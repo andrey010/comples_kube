@@ -14,15 +14,10 @@ after_success:
   - docker build -t andr095/multi-nginx ./nginx
   - docker build -t andr095/multi-server ./server
   - docker build -t andr095/multi-worker ./worker
-
-deploy:
-  provider: elasticbeanstalk
-  region: "us-east-1" 
-  app: "docker-react"
-  env: "Dockerreact-env"
-  bucket_name: "elasticbeanstalk-us-east-1-414579692089"
-  bucket_path: "docker-react"
-  on:
-    branch: main
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: "$AWS_SECRET_KEY"
+  #login to docker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #push to docker hub
+  - docker push andr095/multi-client
+  - docker push andr095/multi-nginx
+  - docker push andr095/multi-server
+  - docker push andr095/multi-worker
